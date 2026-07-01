@@ -120,7 +120,7 @@ a {
   stroke-dashoffset: 1000;
   animation:
     drawRabbitLine 5.4s linear 220ms forwards,
-    eraseRabbitLine 6500ms linear 5.5s forwards;
+    eraseRabbitLine 2500ms linear 4.6s forwards;
 }
 
 .finalType {
