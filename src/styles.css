@@ -1,0 +1,469 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+:root {
+  --paper: #FFFDFB;
+  --ink: #070707;
+  --bar: #d9d9d9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow-x: hidden;
+  background: var(--paper);
+  color: var(--ink);
+  font-family:
+    "Pretendard",
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    sans-serif;
+  letter-spacing: 0;
+}
+
+main {
+  position: relative;
+  background: var(--paper);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.topBar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 34px;
+  padding: 0 10px;
+  background: var(--bar);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 15px;
+  font-weight: 750;
+  line-height: 1;
+}
+
+.brand {
+  font-size: 18px;
+  font-weight: 850;
+}
+
+.topBar nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(34px, 7.6vw, 120px);
+}
+
+.topBar a {
+  transition: opacity 160ms ease;
+}
+
+.topBar a:hover {
+  opacity: 0.58;
+}
+
+.hero {
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding-top: 34px;
+  background: var(--paper);
+  pointer-events: none;
+  animation: heroExit 960ms cubic-bezier(0.22, 1, 0.36, 1) 11.55s forwards;
+}
+
+.hero.is-skipped {
+  animation: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.rabbitDrawing {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(330px, 38vw);
+  min-width: 250px;
+  height: auto;
+  overflow: visible;
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+}
+
+.rabbitDrawing path {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 4.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation:
+    drawRabbitLine 5.4s linear 220ms forwards,
+    eraseRabbitLine 6500ms linear 5.5s forwards;
+}
+
+.finalType {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max-content;
+  text-align: center;
+  opacity: 0;
+  transform: translate(-50%, -45%) scale(0.992);
+  animation:
+    finalTypeIn 620ms cubic-bezier(0.22, 1, 0.36, 1) 7s forwards,
+    finalTypeOut 760ms cubic-bezier(0.7, 0, 0.2, 1) 10s forwards;
+}
+
+.finalType strong {
+  display: block;
+  font-size: clamp(23px, 2.1vw, 34px);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.finalType span {
+  display: block;
+  margin-top: 13px;
+  font-size: clamp(8px, 0.7vw, 10.5px);
+  font-weight: 850;
+  line-height: 1;
+}
+
+.projectShowcase {
+  position: relative;
+  z-index: 1;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 72px 24px 48px;
+  overflow: hidden;
+  background: #fffdfb;
+  opacity: 0;
+  transform: translateY(100svh);
+  animation: projectShowcaseIn 1200ms cubic-bezier(0.22, 1, 0.36, 1) 11.55s forwards;
+}
+
+.projectShowcase.is-skipped {
+  animation: none;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.projectScene {
+  position: relative;
+  width: min(1440px, 78vw);
+  height: min(860px, calc(100svh - 128px));
+  min-height: 650px;
+  overflow: visible;
+  perspective: 2200px;
+  perspective-origin: 50% 48%;
+  isolation: isolate;
+}
+
+.projectFace {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 1;
+  pointer-events: none;
+  backface-visibility: hidden;
+  transform: rotateX(calc(var(--face-index) * 90deg)) translateZ(var(--cube-depth));
+}
+
+.projectPadTrack { position: absolute; left: 50%; top: var(--pad-track-top); width: min(1180px, 74vw); height: 100%; z-index: 0; transform: translateX(-50%); transition: top 1040ms cubic-bezier(0.76, 0, 0.24, 1); will-change: top; }
+
+.projectPad {
+  position: absolute;
+  left: 50%;
+  width: var(--pad-width, calc(100% + 160px));
+  top: var(--pad-top);
+  height: var(--pad-height, 90%);
+  background-color: var(--project-accent, #e9ddd4);
+  filter: blur(var(--pad-blur, 30px));
+  opacity: var(--pad-opacity, 0.32);
+  transform: translateX(-50%) translateZ(0);
+}
+
+.imageCube {
+    --cube-depth: min(220px, 17vw);
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  z-index: 3;
+  width: min(1040px, 60vw);
+  aspect-ratio: 760 / 428;
+  transform-style: preserve-3d;
+  transform-origin: 50% 50%;
+  transform: translate(-50%, -50%) rotateX(calc(var(--rotation-step) * -90deg));
+  transition: transform 1040ms cubic-bezier(0.76, 0, 0.24, 1);
+  will-change: transform;
+}
+
+.projectContent {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+  transform-style: preserve-3d;
+}
+
+.projectMedia {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  background: rgba(0, 0, 0, 0.06);
+  backface-visibility: hidden;
+  box-shadow:
+    0 20px 44px rgba(0, 0, 0, 0.1),
+    0 1px 0 rgba(255, 255, 255, 0.65) inset;
+  transform-origin: 50% 58%;
+  transform-style: preserve-3d;
+}
+
+.projectMedia::before,
+.projectMedia::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.projectMedia::before {
+  left: 0;
+  right: 0;
+  bottom: -30px;
+  height: 30px;
+  background: rgba(18, 18, 18, 0.2);
+  filter: blur(0.2px);
+  opacity: 0.24;
+  transform: rotateX(-74deg);
+  transform-origin: top;
+  transition: opacity 520ms ease;
+}
+
+.projectMedia::after {
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 28%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.18), transparent 32%);
+  opacity: 0;
+  transition: opacity 520ms ease;
+}
+
+.projectMedia img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.projectOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: none;
+  grid-template-columns: 1fr 0.48fr;
+  align-items: center;
+  padding: clamp(28px, 4vw, 52px);
+  color: rgba(255, 255, 255, 0.72);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+.projectOverlay p,
+.projectOverlay h2 {
+  margin: 0;
+}
+
+.projectOverlay p {
+  justify-self: end;
+  align-self: start;
+  display: grid;
+  gap: 8px;
+  padding-top: 18px;
+  font-size: clamp(22px, 2.3vw, 40px);
+  font-weight: 300;
+  line-height: 1.05;
+}
+
+.projectOverlay h2 {
+  justify-self: end;
+  align-self: end;
+  display: grid;
+  gap: 8px;
+  padding-bottom: 10px;
+  font-size: clamp(30px, 3vw, 54px);
+  font-weight: 350;
+  line-height: 1.06;
+  text-align: right;
+}
+
+.projectContent > h1 {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 42px);
+  margin: 0;
+  font-size: 24px;
+  font-weight: 850;
+  line-height: 1.4;
+  text-align: center;
+  opacity: 0;
+  transform: translateX(-50%);
+}
+
+.scrollHint {
+  position: absolute;
+  left: 50%;
+  top: calc(48% + min(1040px, 60vw) * 0.2815 + 76px);
+  z-index: 4;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(18px, 1.55vw, 25px);
+  font-weight: 850;
+  line-height: 1.2;
+  text-align: center;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  transition:
+    opacity 520ms ease,
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.scrollHint.is-hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(10px);
+}
+
+@keyframes drawRabbitLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes eraseRabbitLine {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
+@keyframes finalTypeIn {
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes finalTypeOut {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -62%) scale(0.96);
+  }
+}
+
+@keyframes heroExit {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes projectShowcaseIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 760px) {
+  .topBar {
+    min-height: 42px;
+    height: auto;
+    padding: 0 12px;
+    font-size: 12px;
+  }
+
+  .brand {
+    font-size: 15px;
+  }
+
+  .topBar nav {
+    gap: 16px;
+  }
+
+  .rabbitDrawing {
+    width: min(300px, 70vw);
+    min-width: 220px;
+  }
+
+  .finalType strong {
+    font-size: 24px;
+  }
+
+  .projectShowcase {
+    padding-inline: 18px;
+  }
+
+  .projectScene {
+    width: 100%;
+    height: min(680px, calc(100svh - 86px));
+    min-height: 560px;
+  }
+
+  .projectContent {
+    width: 100%;
+    min-height: 560px;
+    padding: 78px 14px 48px;
+  }
+
+  .projectMedia {
+    width: 100%;
+  }
+
+  .projectOverlay {
+    padding: 20px;
+  }
+
+  .projectOverlay p {
+    font-size: 20px;
+  }
+
+  .projectOverlay h2 {
+    font-size: 26px;
+  }
+
+  .projectContent > h1 {
+    font-size: 20px;
+  }
+
+  .scrollHint {
+    top: calc(48% + min(1040px, 60vw) * 0.2815 + 54px);
+    font-size: 18px;
+  }
+}
