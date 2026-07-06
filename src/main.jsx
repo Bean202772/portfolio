@@ -46,12 +46,15 @@ const blurPadPresets = [
   { color: "rgba(255, 255, 255, 0.74)", width: "calc(100% + 160px)", height: "90%", blur: "40px", opacity: 0.32 },
 ];
 
+const padTrackItems = Array.from(
+  { length: 40 },
+  (_, index) => blurPadPresets[index % blurPadPresets.length],
+);
 const padTrackBaseIndex = 16;
 const padStartPercent = 2;
 const padPitchPercent = 120;
-const padVisibleRadius = 3; // only render pads within this many slots of the current view
 
-function ContinuousHero({ skipped, onSkip }) {
+function ContinuousHero({ skipped }) {
   return (
     <section className={`hero ${skipped ? "is-skipped" : ""}`} id="home" aria-label="Portfolio opening">
       <svg className="rabbitDrawing" viewBox="0 0 570 420" aria-hidden="true">
@@ -62,10 +65,6 @@ function ContinuousHero({ skipped, onSkip }) {
         <strong>LEE&nbsp;&nbsp;GABIN</strong>
         <span>PRODUCT UIUX DESIGNER</span>
       </div>
-
-      <button type="button" className="skipIntro" onClick={onSkip}>
-        Skip Intro
-      </button>
     </section>
   );
 }
@@ -97,21 +96,6 @@ function ProjectShowcase({ skipped }) {
   const lockedRef = useRef(false);
   const touchStartRef = useRef(null);
   const padTrackTop = padStartPercent - (padTrackBaseIndex + rotationStep) * padPitchPercent;
-
-  // Only render pads near the currently visible slot instead of a fixed 40-item track.
-  // Each pad keeps its absolute --pad-top position (relative to the track's own
-  // coordinate space), so this is purely a windowing optimization and doesn't
-  // change the visual result — it just stops blurring 30+ off-screen divs.
-  const visiblePads = [];
-  for (let offset = -padVisibleRadius; offset <= padVisibleRadius; offset += 1) {
-    const trackIndex = padTrackBaseIndex + rotationStep + offset;
-    const presetIndex = ((trackIndex % blurPadPresets.length) + blurPadPresets.length) % blurPadPresets.length;
-    visiblePads.push({
-      key: trackIndex,
-      trackIndex,
-      preset: blurPadPresets[presetIndex],
-    });
-  }
 
   useEffect(() => {
     const rotate = (direction) => {
@@ -158,17 +142,17 @@ function ProjectShowcase({ skipped }) {
     <section className={`projectShowcase ${skipped ? "is-skipped" : ""}`} id="work" aria-label="Rotating project showcase">
       <div className="projectScene">
         <div className="projectPadTrack" style={{ "--pad-track-top": `${padTrackTop}%` }} aria-hidden="true">
-          {visiblePads.map(({ key, trackIndex, preset }) => (
+          {padTrackItems.map((pad, index) => (
             <div
               className="projectPad"
-              key={key}
+              key={`${pad.color}-${index}`}
               style={{
-                "--project-accent": preset.color,
-                "--pad-top": `${trackIndex * padPitchPercent}%`,
-                "--pad-width": preset.width,
-                "--pad-height": preset.height,
-                "--pad-blur": preset.blur,
-                "--pad-opacity": preset.opacity,
+                "--project-accent": pad.color,
+                "--pad-top": `${index * padPitchPercent}%`,
+                "--pad-width": pad.width,
+                "--pad-height": pad.height,
+                "--pad-blur": pad.blur,
+                "--pad-opacity": pad.opacity,
               }}
             />
           ))}
@@ -214,7 +198,7 @@ function App() {
       </header>
 
       <main>
-        <ContinuousHero skipped={introSkipped} onSkip={showWork} />
+        <ContinuousHero skipped={introSkipped} />
         <ProjectShowcase skipped={introSkipped} />
       </main>
     </>

@@ -87,7 +87,7 @@ a {
   padding-top: 34px;
   background: var(--paper);
   pointer-events: none;
-  animation: heroExit 500ms cubic-bezier(0.22, 1, 0.36, 1) 3.5s forwards;
+  animation: heroExit 960ms cubic-bezier(0.22, 1, 0.36, 1) 11.55s forwards;
 }
 
 .hero.is-skipped {
@@ -119,8 +119,8 @@ a {
   stroke-dasharray: 1000;
   stroke-dashoffset: 1000;
   animation:
-    drawRabbitLine 1.4s linear 100ms forwards,
-    eraseRabbitLine 900ms linear 1.3s forwards;
+    drawRabbitLine 5.4s linear 220ms forwards,
+    eraseRabbitLine 2500ms linear 4.6s forwards;
 }
 
 .finalType {
@@ -132,8 +132,8 @@ a {
   opacity: 0;
   transform: translate(-50%, -45%) scale(0.992);
   animation:
-    finalTypeIn 400ms cubic-bezier(0.22, 1, 0.36, 1) 1.7s forwards,
-    finalTypeOut 500ms cubic-bezier(0.7, 0, 0.2, 1) 3s forwards;
+    finalTypeIn 620ms cubic-bezier(0.22, 1, 0.36, 1) 7s forwards,
+    finalTypeOut 760ms cubic-bezier(0.7, 0, 0.2, 1) 10s forwards;
 }
 
 .finalType strong {
@@ -151,36 +151,6 @@ a {
   line-height: 1;
 }
 
-.skipIntro {
-  position: absolute;
-  right: clamp(16px, 3vw, 40px);
-  bottom: clamp(20px, 4vh, 40px);
-  z-index: 2;
-  padding: 8px 16px;
-  border: 1px solid rgba(7, 7, 7, 0.35);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--ink);
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 750;
-  letter-spacing: 0.02em;
-  cursor: pointer;
-  opacity: 0;
-  pointer-events: auto;
-  transition: opacity 320ms ease, background 160ms ease, color 160ms ease;
-  animation: skipIntroIn 400ms ease 300ms forwards;
-}
-
-.skipIntro:hover {
-  background: var(--ink);
-  color: var(--paper);
-}
-
-.hero.is-skipped .skipIntro {
-  display: none;
-}
-
 .projectShowcase {
   position: relative;
   z-index: 1;
@@ -192,7 +162,7 @@ a {
   background: #fffdfb;
   opacity: 0;
   transform: translateY(100svh);
-  animation: projectShowcaseIn 800ms cubic-bezier(0.22, 1, 0.36, 1) 3.5s forwards;
+  animation: projectShowcaseIn 1200ms cubic-bezier(0.22, 1, 0.36, 1) 11.55s forwards;
 }
 
 .projectShowcase.is-skipped {
@@ -421,12 +391,6 @@ a {
   to {
     opacity: 0;
     visibility: hidden;
-  }
-}
-
-@keyframes skipIntroIn {
-  to {
-    opacity: 1;
   }
 }
 
