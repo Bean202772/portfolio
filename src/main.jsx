@@ -9,22 +9,25 @@ const projects = [
   {
     title: "Product Design",
     image: "/frame-2.png",
+    href: "/e-o",
     alt: "Product Design project preview",
     kicker: ["Observe", "Connect", "Protect"],
     headline: ["Guardians", "Above"],
     accent: "#e9ddd4",
   },
   {
-    title: "Product UIUX",
+    title: "Peloton Living",
     image: "/ar-3.png",
-    alt: "Product UIUX project preview",
+    href: "/peloton-living",
+    alt: "Peloton Living project preview",
     kicker: ["Life", "Care", "Flow"],
     headline: ["Healthy", "Expansion"],
     accent: "#e5e0da",
   },
   {
-    title: "festival-Brand",
-    image: "festival-branding.png",
+    title: "Kulimax",
+    image: "/festival-branding.png",
+    href: "/kulimax",
     alt: "Service Design project preview",
     kicker: ["Map", "Flow", "Touchpoint"],
     headline: ["Service", "System"],
@@ -39,6 +42,83 @@ const projects = [
     accent: "#eee6da",
   },
 ];
+
+const detailImages = [
+  { src: "/e-o/hero.png", alt: "e.o floating product hero scene" },
+  { src: "/e-o/detail-strip.png", alt: "e.o product hardware detail views" },
+  { src: "/e-o/overview.png", alt: "e.o product lineup above a city skyline" },
+  { src: "/e-o/night-scene.png", alt: "e.o safety robots lighting a park walkway at night" },
+  { src: "/e-o/interface.png", alt: "e.o patrol interface concept in a crosswalk scene" },
+  { src: "/e-o/product-shot.png", alt: "e.o product design closing render" },
+];
+
+const pelotonPngImages = {
+  hero: { src: "/peloton-png/hero.png", alt: "Peloton Living hero image with product copy" },
+  scenes: [
+    { src: "/peloton-png/scene-1.png", alt: "Peloton Living kitchen scene" },
+    { src: "/peloton-png/scene-2.png", alt: "Peloton Living wellness appliance scene" },
+    { src: "/peloton-png/scene-3.png", alt: "Peloton Living entry scene" },
+    { src: "/peloton-png/scene-4.png", alt: "Peloton Living bedroom scene" },
+  ],
+  frames: [
+    { src: "/peloton-png/standard.png", alt: "Peloton Living Standard product explanation frame" },
+    { src: "/peloton-png/alive.png", alt: "Peloton Living Alive product explanation frame" },
+    { src: "/peloton-png/fruto-press.png", alt: "Peloton Living Fruto Press product explanation frame" },
+    { src: "/peloton-png/breeze.png", alt: "Peloton Living Breeze product explanation frame" },
+    { src: "/peloton-png/lineup.png", alt: "Peloton Living product lineup frame" },
+  ],
+};
+
+const kulimaxVideo = {
+  src: "/kulimax/main.mp4",
+  title: "Kulimax main festival branding video",
+  autoPlay: true,
+  controls: false,
+  loop: true,
+  muted: true,
+};
+
+const kulimaxImages = {
+  titleStrip: { src: "/kulimax/title-strip.jpg", alt: "Our Brightest Moment Kulimax title strip" },
+  poster: { src: "/kulimax/poster.png", alt: "Kulimax festival main poster" },
+  closing: [
+    { src: "/kulimax/guide.png", alt: "Kulimax festival key information poster" },
+    { src: "/kulimax/recruit.png", alt: "Kulimax festival participant recruitment poster" },
+  ],
+};
+
+const kulimaxGoods = [
+  { src: "/kulimax/good-legalpad.png", alt: "Kulimax legal pad merchandise" },
+  { src: "/kulimax/good-magnet.png", alt: "Kulimax round magnet merchandise" },
+  { src: "/kulimax/good-blue-clock.png", alt: "Kulimax blue clock merchandise" },
+  { src: "/kulimax/good-wipes.png", alt: "Kulimax wet wipes merchandise" },
+  { src: "/kulimax/good-bookmark.png", alt: "Kulimax bookmark merchandise" },
+];
+
+const kulimaxSocialImages = [
+  {
+    src: "/kulimax/social-showcase.png",
+    alt: "Kulimax Instagram phone mockup showcase",
+  },
+];
+
+const kulimaxBoothCards = [
+  "Red Zone",
+  "Fire",
+  "Rest",
+  "Life Game",
+  "KU-LUCK",
+  "Apple",
+  "Red Thread",
+  "Heartbeat",
+  "Red Letter",
+  "Story",
+  "Vamos",
+  "Strawberry",
+].map((name, index) => ({
+  src: `/kulimax/booth-cards/booth-${String(index + 1).padStart(2, "0")}.png`,
+  alt: `Kulimax ${name} booth card news`,
+}));
 
 const blurPadPresets = [
   { color: "rgb(255, 255, 255)", width: "calc(100% + 160px)", height: "90%", blur: "40px", opacity: 0.32 },
@@ -70,20 +150,28 @@ function ContinuousHero({ skipped }) {
 }
 
 function ProjectFace({ project, index }) {
+  const media = (
+    <div className="projectMedia">
+      <img src={project.image} alt={project.alt} />
+      <div className="projectOverlay" aria-hidden="true">
+        <p>{project.kicker.map((line) => <span key={line}>{line}</span>)}</p>
+        <h2>{project.headline.map((line) => <span key={line}>{line}</span>)}</h2>
+      </div>
+    </div>
+  );
+
   return (
     <article
-      className="projectFace"
+      className={`projectFace ${project.href ? "hasLink" : ""}`}
       aria-label={`${project.title} project face`}
       style={{ "--face-index": index }}
     >
       <div className="projectContent">
-        <div className="projectMedia">
-          <img src={project.image} alt={project.alt} />
-          <div className="projectOverlay" aria-hidden="true">
-            <p>{project.kicker.map((line) => <span key={line}>{line}</span>)}</p>
-            <h2>{project.headline.map((line) => <span key={line}>{line}</span>)}</h2>
-          </div>
-        </div>
+        {project.href ? (
+          <a className="projectLink" href={project.href} aria-label={`${project.title} project detail`}>
+            {media}
+          </a>
+        ) : media}
         <h1>{project.title}</h1>
       </div>
     </article>
@@ -168,14 +256,368 @@ function ProjectShowcase({ skipped }) {
   );
 }
 
+function TopBar({ onWorkClick, isProjectDetail }) {
+  return (
+    <header className="topBar">
+      <a className="brand" href={isProjectDetail ? "/" : "#home"} aria-label="Lee Gabin home">
+        LEE GABIN
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href={isProjectDetail ? "/#work" : "#work"} onClick={onWorkClick}>WORK</a>
+        <a href={isProjectDetail ? "/#about" : "#about"}>ABOUT</a>
+        <a href={isProjectDetail ? "/#contact" : "#contact"}>CONTACT</a>
+      </nav>
+    </header>
+  );
+}
+
+function DetailFigure({ image, index, className = "", children }) {
+  const figureRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const figure = figureRef.current;
+    if (!figure) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      {
+        rootMargin: "0px 0px -14%",
+        threshold: 0.16,
+      },
+    );
+
+    observer.observe(figure);
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <figure
+      className={`detailFigure ${className} ${isVisible ? "is-visible" : ""}`}
+      ref={figureRef}
+      style={{ "--detail-index": index }}
+    >
+      <img src={image.src} alt={image.alt} />
+      {children}
+    </figure>
+  );
+}
+
+function DetailVideo({ video, index, className = "" }) {
+  const figureRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const figure = figureRef.current;
+    if (!figure) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      {
+        rootMargin: "0px 0px -14%",
+        threshold: 0.16,
+      },
+    );
+
+    observer.observe(figure);
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <figure
+      className={`detailFigure detailVideo ${className} ${isVisible ? "is-visible" : ""}`}
+      ref={figureRef}
+      style={{ "--detail-index": index }}
+    >
+      <video
+        aria-label={video.title}
+        autoPlay={video.autoPlay}
+        controls={video.controls}
+        loop={video.loop}
+        muted={video.muted}
+        playsInline
+        preload="metadata"
+        src={video.src}
+      />
+    </figure>
+  );
+}
+
+function KulimaxGoodsMarquee() {
+  const trackItems = [...kulimaxGoods, ...kulimaxGoods];
+
+  return (
+    <figure className="kulimaxGoodsMarquee" aria-label="Kulimax festival branded goods">
+      <div className="kulimaxGoodsTrack">
+        {trackItems.map((item, index) => (
+          <img src={item.src} alt={index < kulimaxGoods.length ? item.alt : ""} aria-hidden={index >= kulimaxGoods.length} key={`${item.src}-${index}`} />
+        ))}
+      </div>
+    </figure>
+  );
+}
+
+function KulimaxBoothMarquee() {
+  const trackItems = [...kulimaxBoothCards, ...kulimaxBoothCards];
+
+  return (
+    <figure className="kulimaxBoothMarquee" aria-label="Kulimax booth card news">
+      <div className="kulimaxBoothTrack">
+        {trackItems.map((item, index) => (
+          <img src={item.src} alt={index < kulimaxBoothCards.length ? item.alt : ""} aria-hidden={index >= kulimaxBoothCards.length} key={`${item.src}-${index}`} />
+        ))}
+      </div>
+    </figure>
+  );
+}
+
+function KulimaxSocialShowcase() {
+  const trackItems = [...kulimaxSocialImages, ...kulimaxSocialImages];
+
+  return (
+    <figure className="kulimaxSocialShowcase" aria-label="Kulimax Instagram phone mockups">
+      <div className="kulimaxSocialTrack">
+        {trackItems.map((item, index) => (
+          <img src={item.src} alt={index < kulimaxSocialImages.length ? item.alt : ""} aria-hidden={index >= kulimaxSocialImages.length} key={`${item.src}-${index}`} />
+        ))}
+      </div>
+    </figure>
+  );
+}
+
+function ProjectDetail() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
+    <main className="detailPage" aria-label="e.o product design detail">
+      <section className="detailIntro" aria-label="e.o project overview">
+        <p className="detailLead">
+          Cities are already equipped with advanced safety technologies,<br />
+          and autonomous patrol robots have begun to appear. Yet we<br />
+          still feel uneasy walking alone at night<br />
+          and uncertain in unfamiliar places.
+          <br />
+          <br />
+          That is where we began our question.<br />
+          Closer. Gentler. Yet more reliable.<br />
+          Filling the gaps left by conventional security systems and enabling<br />
+          real-time response, e.o stands by your side-today and every day.
+        </p>
+
+        <dl className="detailMeta">
+          <div>
+            <dt>Nation</dt>
+            <dd>Korea</dd>
+          </div>
+          <div>
+            <dt>Discipline</dt>
+            <dd>Product Design</dd>
+          </div>
+          <div>
+            <dt>Year</dt>
+            <dd>2026</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section className="detailImageStream" aria-label="e.o project images">
+        {detailImages.map((image, index) => (
+          <DetailFigure image={image} index={index} key={image.src} />
+        ))}
+      </section>
+
+      <footer className="detailOutro" aria-label="Portfolio footer">
+        <a className="nextProject" href="/peloton-living" aria-label="Go to Peloton Living project">
+          <span>Next project</span>
+          <strong>Next project</strong>
+        </a>
+
+        <div className="footerLinks" aria-label="Social links">
+          <a href="https://www.instagram.com/" target="_blank" rel="noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">Linkedin</a>
+          <a href="https://www.behance.net/" target="_blank" rel="noreferrer">Behance</a>
+        </div>
+
+        <address className="footerContact">
+          <a href="mailto:gabin7555@gmail.com">gabin7555@gmail.com</a>
+          <a href="tel:+8210086815102">(+82) 010-8681-5102</a>
+        </address>
+      </footer>
+    </main>
+  );
+}
+
+function PelotonLivingDetail() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
+    <main className="pelotonDetailPage" aria-label="Peloton Living project detail">
+      <section className="pelotonIntro" aria-label="Peloton Living project overview">
+        <p className="detailLead">
+          PELOTON Living is a smart home ecosystem designed to promote healthier<br />
+          lifestyles through connected indoor farming and wellness appliances.<br />
+          The system integrates a smart planter, air purifier, juicer, and mobile<br />
+          application to support the entire process from growing fresh produce<br />
+          to consuming it. By combining IoT technology with thoughtful product<br />
+          design, PELOTON Living encourages sustainable habits while making healthy<br />
+          living simple, interactive, and accessible in everyday life.
+        </p>
+
+        <dl className="detailMeta">
+          <div>
+            <dt>Nation</dt>
+            <dd>Korea</dd>
+          </div>
+          <div>
+            <dt>Discipline</dt>
+            <dd>Product UIUX</dd>
+          </div>
+          <div>
+            <dt>Year</dt>
+            <dd>2026</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section className="pelotonImageStream" aria-label="Peloton Living project images">
+        <DetailFigure image={pelotonPngImages.hero} index={0} className="pelotonHero" />
+
+        <div className="pelotonSceneGrid">
+          {pelotonPngImages.scenes.map((image, index) => (
+            <DetailFigure image={image} index={index + 1} key={image.src} />
+          ))}
+        </div>
+
+        {pelotonPngImages.frames.map((image, index) => (
+          <DetailFigure
+            image={image}
+            index={index + 5}
+            className={`pelotonFrame ${index === pelotonPngImages.frames.length - 1 ? "pelotonLineupFrame" : ""}`}
+            key={image.src}
+          />
+        ))}
+      </section>
+
+      <footer className="detailOutro" aria-label="Portfolio footer">
+        <a className="nextProject" href="/kulimax" aria-label="Go to Kulimax project">
+          <span>Next project</span>
+          <strong>Next project</strong>
+        </a>
+
+        <div className="footerLinks" aria-label="Social links">
+          <a href="https://www.instagram.com/" target="_blank" rel="noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">Linkedin</a>
+          <a href="https://www.behance.net/" target="_blank" rel="noreferrer">Behance</a>
+        </div>
+
+        <address className="footerContact">
+          <a href="mailto:gabin7555@gmail.com">gabin7555@gmail.com</a>
+          <a href="tel:+8210086815102">(+82) 010-8681-5102</a>
+        </address>
+      </footer>
+    </main>
+  );
+}
+
+function KulimaxDetail() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
+    <main className="detailPage" aria-label="Kulimax festival branding detail">
+      <section className="detailIntro" aria-label="Kulimax project overview">
+        <p className="detailLead">
+          As a member of the Festival Promotion and Media Team, I<br />
+          designed promotional content and contributed to the visual<br />
+          branding of KULIMAX, helping create a vibrant festival<br />
+          experience for thousands of students.<br />
+          <br />
+          My responsibilities included designing the main festival poster,<br />
+          event posters, social media card news, the official festival booklet,<br />
+          and promotional merchandise, ensuring a consistent visual identity<br />
+          across both online and offline platforms.
+        </p>
+
+        <dl className="detailMeta">
+          <div>
+            <dt>Nation</dt>
+            <dd>Korea</dd>
+          </div>
+          <div>
+            <dt>Discipline</dt>
+            <dd>Branding</dd>
+          </div>
+          <div>
+            <dt>Year</dt>
+            <dd>2026</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section className="kulimaxImageStream" aria-label="Kulimax project images">
+        <DetailVideo video={kulimaxVideo} index={0} className="kulimaxMainVideo" />
+        <DetailFigure image={kulimaxImages.titleStrip} index={1} className="kulimaxTitleStrip" />
+
+        <KulimaxGoodsMarquee />
+
+        <KulimaxSocialShowcase />
+        <KulimaxBoothMarquee />
+      </section>
+
+      <footer className="detailOutro" aria-label="Portfolio footer">
+        <a className="nextProject" href="/peloton-living" aria-label="Go to previous project">
+          <span>Previous project</span>
+          <strong>Previous project</strong>
+        </a>
+
+        <div className="footerLinks" aria-label="Social links">
+          <a href="https://www.instagram.com/" target="_blank" rel="noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">Linkedin</a>
+          <a href="https://www.behance.net/" target="_blank" rel="noreferrer">Behance</a>
+        </div>
+
+        <address className="footerContact">
+          <a href="mailto:gabin7555@gmail.com">gabin7555@gmail.com</a>
+          <a href="tel:+8210086815102">(+82) 010-8681-5102</a>
+        </address>
+      </footer>
+    </main>
+  );
+}
+
 function App() {
-  const [introSkipped, setIntroSkipped] = useState(false);
+  const [introSkipped, setIntroSkipped] = useState(() => window.location.hash === "#work");
+  const isProjectDetail = window.location.pathname === "/e-o";
+  const isPelotonLiving = window.location.pathname === "/peloton-living";
+  const isKulimax = window.location.pathname === "/kulimax";
 
   useEffect(() => {
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
-    window.scrollTo(0, 0);
+    if (window.location.hash === "#work") {
+      setIntroSkipped(true);
+      window.scrollTo({ top: 0, behavior: "auto" });
+    } else {
+      window.scrollTo(0, 0);
+    }
   }, []);
 
   const showWork = (event) => {
@@ -184,18 +626,36 @@ function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  if (isProjectDetail) {
+    return (
+      <>
+        <TopBar isProjectDetail />
+        <ProjectDetail />
+      </>
+    );
+  }
+
+  if (isPelotonLiving) {
+    return (
+      <>
+        <TopBar isProjectDetail />
+        <PelotonLivingDetail />
+      </>
+    );
+  }
+
+  if (isKulimax) {
+    return (
+      <>
+        <TopBar isProjectDetail />
+        <KulimaxDetail />
+      </>
+    );
+  }
+
   return (
     <>
-      <header className="topBar">
-        <a className="brand" href="#home" aria-label="Lee Gabin home">
-          LEE GABIN
-        </a>
-        <nav aria-label="Primary navigation">
-          <a href="#work" onClick={showWork}>WORK</a>
-          <a href="#about">ABOUT</a>
-          <a href="#contact">CONTACT</a>
-        </nav>
-      </header>
+      <TopBar onWorkClick={showWork} />
 
       <main>
         <ContinuousHero skipped={introSkipped} />
